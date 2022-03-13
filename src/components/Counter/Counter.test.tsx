@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import Counter from "./Counter";
 import user from "@testing-library/user-event";
 
@@ -75,6 +81,13 @@ describe("Counter", () => {
 
       it('renders "Current count: 15"', () => {
         expect(screen.getByText("Current Count: 15")).toBeInTheDocument();
+      });
+
+      // eslint-disable-next-line jest/expect-expect
+      it("renders too big, and will disappear after 300ms", async () => {
+        await waitForElementToBeRemoved(() =>
+          screen.queryByText(/I am too small/)
+        );
       });
 
       describe('when the incrementor changes to empty string and "+" button is clicked', () => {
