@@ -5,7 +5,7 @@ export interface CounterProps {
   defaultCount: number;
 }
 
-export function Counter({ description, defaultCount }: CounterProps) {
+export default function Counter({ description, defaultCount }: CounterProps) {
   const [count, setCount] = useState(defaultCount);
   const [incrementor, setIncrementor] = useState(1);
 
