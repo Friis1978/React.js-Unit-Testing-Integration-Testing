@@ -1,16 +1,18 @@
 import Counter from "../components/AsyncExample/Counter";
 import { MaterialUI } from "../components/MockMaterialUI/MaterialUI";
+import { MyDrawer } from "../components/MockMaterialDrawer/Drawer";
 
 export default function Home() {
   return (
     <div>
-      <h1>Hello React.js Testing Series Friends!!!</h1>
+      <h1>Testing Components</h1>
       {/* <Counter description="My Counter" defaultCount={0} /> */}
-      <MaterialUI
+      {/*<MaterialUI
         onMoney={(money) => {
           alert(money);
         }}
-      />
+      />*/}
+      <MyDrawer />
     </div>
   );
 }
