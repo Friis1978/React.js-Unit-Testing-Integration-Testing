@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Counter from "./Counter";
 import user from "@testing-library/user-event";
 
@@ -17,13 +17,27 @@ describe("Counter", () => {
     });
 
     describe("when + is clicked", () => {
-      beforeEach(() => {
-        fireEvent.click(screen.getByLabelText("Add to Counter"));
+      beforeEach(async () => {
+        user.click(screen.getByLabelText("Add to Counter"));
+        // if waiting for async call its best to wait for it in beforeEach
+        await waitFor(() => {
+          screen.getByText("Current Count: 1");
+        });
       });
 
       it('renders "Current count: 1"', () => {
         expect(screen.getByText("Current Count: 1")).toBeInTheDocument();
       });
+
+      // Async call can also be called directly in the tests
+      // eslint-disable-next-line jest/no-commented-out-tests
+      /*
+        it('renders "Current count: 1"', async () => {
+        await waitFor(()=> {
+          expect(screen.getByText("Current Count: 1")).toBeInTheDocument()
+        });
+      });
+      */
     });
 
     describe("when - is clicked", () => {
@@ -51,9 +65,12 @@ describe("Counter", () => {
     });
 
     describe('when the incrementor changes to 5 and "+" button is clicked', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         user.type(screen.getByLabelText(/Incrementor/), "{selectall}5");
-        fireEvent.click(screen.getByLabelText("Add to Counter"));
+        user.click(screen.getByLabelText("Add to Counter"));
+        await waitFor(() => {
+          screen.getByText("Current Count: 15");
+        });
       });
 
       it('renders "Current count: 15"', () => {
@@ -61,12 +78,15 @@ describe("Counter", () => {
       });
 
       describe('when the incrementor changes to empty string and "+" button is clicked', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           user.type(
             screen.getByLabelText(/Incrementor/),
             "{selectall}{delete}"
           );
           user.click(screen.getByRole("button", { name: "Add to Counter" }));
+          await waitFor(() => {
+            screen.getByText("Current Count: 16");
+          });
         });
 
         it('renders "Current Count: 16"', () => {
